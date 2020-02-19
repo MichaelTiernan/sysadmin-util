@@ -1,0 +1,61 @@
+#!/bin/sh
+# sh Source code:
+# 
+# Description:
+# 
+# Command syntax:
+#        Example:
+# 
+# Arguments
+#      Input:
+#     Output:
+# 
+# Comments:
+# 
+# Additional docs:
+# 
+# Original author: Michael C Tiernan
+#            date: Lost in the mists of time. 2019-03-30
+# 
+#+-----------------------------------------------------------+
+#| History
+#+-----------------------------------------------------------+
+#| 20200218-165544 - MCT - Initial release.1
+#+-----------------------------------------------------------+
+
+###
+####~#~#~#~#~#~#~#~#~#~#~#~#~#~#~#~#~#~#~#~#~#~#~#~#~#~
+
+setTZ="local"
+dateStamp=""
+
+while getopts "h?zlguo:" _passedOpts; do
+	case ${_passedOpts} in
+		\?|h)
+			echo "Usage: $0 [-h|-?] [-z|-l|-g] [-o [+-]{#}"
+			exit 0
+			;;
+		z|g)
+			setTZ="GMT"
+			;;
+		l)
+			setTZ="local"
+			;;
+		o)
+			setTZ=${OPTARG}
+			echo "Sorry, offset not implemented yet."
+			;;
+		u)
+			dateStamp="${USER:=Unknown_Username}_"
+	esac
+done
+
+if [ "${setTZ}" == "GMT" ] ; then
+	dateStamp="${dateStamp}$( date -u +"%Y%m%d-%H%M%S" )"
+elif [ "${setTZ}" == "local" ] ; then
+	dateStamp="${dateStamp}$( date +"%Y%m%d-%H%M%S" )"
+fi
+echo "${dateStamp}"
+
+####~#~#~#~#~#~#~#~#~#~#~#~#~#~#~#~#~#~#~#~#~#~#~#~#~#~
+###
