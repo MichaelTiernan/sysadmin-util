@@ -2,15 +2,17 @@
 # sh Source code:
 #
 # Description:
+# Return a consistantly formatted current datestamp for inclusions in
+# logs and such.
 #
-# Command syntax:
+# Command syntax: ./datestamp
 #        Example:
-#
-# Arguments
-#      Input:
-#     Output:
+# ./datestamp
+#   20200226-154837
 #
 # Comments:
+# Not slick but handy when you need to enter a log or something and
+# want the current information in it.
 #
 # Additional docs:
 #
@@ -20,6 +22,7 @@
 #+-----------------------------------------------------------+
 #| History
 #+-----------------------------------------------------------+
+#| 20200226-204939 - MCT - Finished cleaning it up.
 #| 20200218-165544 - MCT - Initial release.1
 #+-----------------------------------------------------------+
 
