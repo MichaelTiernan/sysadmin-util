@@ -1,0 +1,89 @@
+#!/bin/ksh
+# ksh Source code:
+#
+# Description:
+### Return a "standardized" formatted datestring representing 
+### the date a file was changed (i.e. the file's age.)
+### The format I use is almost always the same YYYYMMMDD-HHMMSS
+### If I have to move a file out of the way, I use this to give me a
+### clean (and consistant) method for getting the datestamp on the file.
+#
+# Command syntax: filedate filename
+#        Example:
+### # Given this file:
+### $ ls -l /etc/fstab
+### -rw-------  1 root  root 1954 Jan 13 08:16 /etc/fstab
+### You can save it aside quickly and "safely" with:
+### # cp /etc/fstab /etc/fstab-$(filedate /etc/fstab)
+### Which will give you a file named /etc/fstab-20200113-081626
+#
+# Comments:
+### It ain't slick but it helps at the worst times.
+# Areas for improvement are many but mostly to support the date
+# function across the various flavors one may encounter.
+#
+# Additional docs:
+#
+# Original author: Michael C Tiernan <Michael.Tiernan@gMail.com>
+#            date: Lost in the mists of time. Now 30-Mar-2019
+#
+# +-----------------------------------------------------------+
+# | Revision history
+# +-----------------------------------------------------------+
+# |
+# +-----------------------------------------------------------+
+#
+
+###
+ThisScript=${0}
+InputArgs="$@"
+CalledAs=${ThisScript}	# Full path kept.
+typeset -Z5 OurPID=$$
+
+###
+# Error out on any unset vars.
+set -u
+
+###
+####~#~#~#~#~#~#~#~#~#~#~#~#~#~#~#~#~#~#~#~#~#~#~#~#~#~
+
+myPlatform="$(uname -s)"
+
+case ${myPlatform} in
+	Darwin)
+		# print "We're on Darwin."
+		function _dStamp {
+			# dStamp=$( stat cwprintf "%Y\n" "${inFile}" | awk '{ printf "%s\n", strftime("%04Y%02m%02d-%02H%02M%02S","$1") }')
+			dStamp=$( /usr/bin/stat -f "%Sm" -t "%Y%m%d-%H%M%S" "${inFile}" )
+			print "${dStamp}"
+		;}
+
+		;;
+	Linux)
+		# print "We're not on Darwin."
+		function _dStamp {
+			dStamp=$( /usr/bin/stat --printf "%Y" "${inFile}" | awk '{ print strftime("%04Y%02m%02d-%02H%02M%02S", $1) }')
+			print "${dStamp}"
+		;}
+
+		;;
+	*)
+		;;
+esac
+
+if [ $# -eq 0 ] ; then
+	print "Error"
+	exit
+fi
+
+while [ $# -ge 1 ] ; do
+	inFile="${1}"
+	shift
+
+	if [ -f "${inFile}" ] ; then
+		print $(_dStamp "${inFile}")
+	fi
+done
+
+####~#~#~#~#~#~#~#~#~#~#~#~#~#~#~#~#~#~#~#~#~#~#~#~#~#~
+###
