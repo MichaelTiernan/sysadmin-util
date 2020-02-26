@@ -33,6 +33,12 @@ while getopts "h?zlgu" _passedOpts; do
 	case ${_passedOpts} in
 		\?|h)
 			echo "Usage: $0 [-h|-?] [-z|-l|-g]"
+			echo "     : -h = Help! (This message.)"
+			echo "     : -? = Help! (This message.)"
+			echo "     : -z = Use Zero hour (zulu) timezone."
+			echo "     : -g = Use Zero hour (GMT) timezone."
+			echo "     : -l = Use local timezone."
+			echo "     : -u = Prefix the stamp with the user's ID from the system."
 			exit 0
 			;;
 		z|g)
