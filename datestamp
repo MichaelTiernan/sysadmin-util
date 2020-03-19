@@ -22,8 +22,9 @@
 #+-----------------------------------------------------------+
 #| History
 #+-----------------------------------------------------------+
+#| 20200319-074058 - MCT - Duh. Fixed a typo.
 #| 20200226-204939 - MCT - Finished cleaning it up.
-#| 20200218-165544 - MCT - Initial release.1
+#| 20200218-165544 - MCT - Initial release.
 #+-----------------------------------------------------------+
 
 ###
@@ -55,9 +56,9 @@ while getopts "h?zlgu" _passedOpts; do
 	esac
 done
 
-if [ "${setTZ}" == "GMT" ] ; then
+if [ x"${setTZ}" = x"GMT" ] ; then
 	dateStamp="${dateStamp}$( date -u +"%Y%m%d-%H%M%S" )"
-elif [ "${setTZ}" == "local" ] ; then
+elif [ x"${setTZ}" = x"local" ]] ; then
 	dateStamp="${dateStamp}$( date +"%Y%m%d-%H%M%S" )"
 fi
 echo "${dateStamp}"
